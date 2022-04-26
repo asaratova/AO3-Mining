@@ -27,24 +27,26 @@ session.mount('https://', adapter)
 # insert header here like: headers = {'user-agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15'}
 headers = {'user-agent': 'Chrome/99.0.4844.82 (Lenovo; IdeaPad 5 15IIL05)'}
 url = 'https://archiveofourown.org/tags/Birds%20of%20Prey%20(TV)/works?page='
-#url = 'https://archiveofourown.org/works?work_search%5Bsort_column%5D=revised_at&include_work_search%5Brating_ids%5D%5B%5D=10&include_work_search%5Barchive_warning_ids%5D%5B%5D=16&include_work_search%5Barchive_warning_ids%5D%5B%5D=14&work_search%5Bother_tag_names%5D=&exclude_work_search%5Brating_ids%5D%5B%5D=13&exclude_work_search%5Brating_ids%5D%5B%5D=12&exclude_work_search%5Barchive_warning_ids%5D%5B%5D=19&exclude_work_search%5Barchive_warning_ids%5D%5B%5D=20&work_search%5Bexcluded_tag_names%5D=&work_search%5Bcrossover%5D=&work_search%5Bcomplete%5D=&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bquery%5D=&work_search%5Blanguage_id%5D=&commit=Sort+and+Filter&tag_id=Marvel'
-#url = 'https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&exclude_work_search%5Barchive_warning_ids%5D%5B%5D=19&exclude_work_search%5Barchive_warning_ids%5D%5B%5D=20&exclude_work_search%5Brating_ids%5D%5B%5D=13&exclude_work_search%5Brating_ids%5D%5B%5D=12&include_work_search%5Barchive_warning_ids%5D%5B%5D=16&include_work_search%5Barchive_warning_ids%5D%5B%5D=14&include_work_search%5Brating_ids%5D%5B%5D=10&page=2&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=revised_at&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D='
 
 req = urllib.request.Request(url, headers=headers)
 resp = urllib.request.urlopen(req)
 content = resp.read()
 endpage = 0
 
+# separator tags
+# https://archiveofourown.org/works?work_search%5Bsort_column%5D=revised_at&work_search%5Bother_tag_names%5D=&exclude_work_search%5Bfreeform_ids%5D%5B%5D=110&exclude_work_search%5Bfreeform_ids%5D%5B%5D=176&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2379&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2026&exclude_work_search%5Bfreeform_ids%5D%5B%5D=62&work_search%5Bexcluded_tag_names%5D=&work_search%5Bcrossover%5D=&work_search%5Bcomplete%5D=&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bquery%5D=&work_search%5Blanguage_id%5D=&commit=Sort+and+Filter&tag_id=Marvel
+# https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&exclude_work_search%5Bfreeform_ids%5D%5B%5D=110&exclude_work_search%5Bfreeform_ids%5D%5B%5D=176&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2379&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2026&exclude_work_search%5Bfreeform_ids%5D%5B%5D=62&page=2&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=revised_at&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D=
+
 
 def getIds():
-    url = 'https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&exclude_work_search%5Barchive_warning_ids%5D%5B%5D=19&exclude_work_search%5Barchive_warning_ids%5D%5B%5D=20&exclude_work_search%5Brating_ids%5D%5B%5D=13&exclude_work_search%5Brating_ids%5D%5B%5D=12&include_work_search%5Barchive_warning_ids%5D%5B%5D=16&include_work_search%5Barchive_warning_ids%5D%5B%5D=14&include_work_search%5Brating_ids%5D%5B%5D=10&page='
-    secondurl = '&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=revised_at&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D='
-    #url = 'https://archiveofourown.org/tags/Birds%20of%20Prey%20(TV)/works?page='
+    url = 'https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&exclude_work_search%5Bfreeform_ids%5D%5B%5D=110&exclude_work_search%5Bfreeform_ids%5D%5B%5D=176&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2379&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2026&exclude_work_search%5Bfreeform_ids%5D%5B%5D=62&page='
+    secondurl = '&page=2&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=revised_at&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D='
     workName = []
     ids = []
-    end_page = 20
+    start_page = 4
+    end_page = 6
     print("In get contents")
-    for i in range(1, end_page):
+    for i in range(start_page, end_page):
         print(len(ids))
         url = url+str(i)+secondurl
         page = requests.get(url)
