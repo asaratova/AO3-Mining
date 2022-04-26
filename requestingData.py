@@ -11,9 +11,6 @@ from bs4 import BeautifulSoup
 import re
 
 from html.parser import HTMLParser
-import html5lib
-
-import codecs
 
 
 # this may give blank pages
@@ -24,31 +21,31 @@ adapter = HTTPAdapter(max_retries=retry)
 session.mount('http://', adapter)
 session.mount('https://', adapter)
 
-# insert header here like: headers = {'user-agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15'}
-headers = {'user-agent': 'Chrome/99.0.4844.82 (Lenovo; IdeaPad 5 15IIL05)'}
-url = 'https://archiveofourown.org/tags/Birds%20of%20Prey%20(TV)/works?page='
+# there was the possibility of needing headers, and the first url I used to test a lot of initial functions
+#headers = {'user-agent': 'Chrome/99.0.4844.82 (Lenovo; IdeaPad 5 15IIL05)'}
+#url = 'https://archiveofourown.org/tags/Birds%20of%20Prey%20(TV)/works?page='
 
-req = urllib.request.Request(url, headers=headers)
-resp = urllib.request.urlopen(req)
-content = resp.read()
-endpage = 0
+#req = urllib.request.Request(url, headers=headers)
+#resp = urllib.request.urlopen(req)
+#content = resp.read()
+#endpage = 0
 
-# separator tags
-# https://archiveofourown.org/works?work_search%5Bsort_column%5D=revised_at&work_search%5Bother_tag_names%5D=&exclude_work_search%5Bfreeform_ids%5D%5B%5D=110&exclude_work_search%5Bfreeform_ids%5D%5B%5D=176&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2379&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2026&exclude_work_search%5Bfreeform_ids%5D%5B%5D=62&work_search%5Bexcluded_tag_names%5D=&work_search%5Bcrossover%5D=&work_search%5Bcomplete%5D=&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bquery%5D=&work_search%5Blanguage_id%5D=&commit=Sort+and+Filter&tag_id=Marvel
-# https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&exclude_work_search%5Bfreeform_ids%5D%5B%5D=110&exclude_work_search%5Bfreeform_ids%5D%5B%5D=176&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2379&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2026&exclude_work_search%5Bfreeform_ids%5D%5B%5D=62&page=2&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=revised_at&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D=
+# TO-DO: need to see why there are so many empty content IDs, may be in other function
+# TO-DO: check what IDs spit out
 
 
-def getIds():
+def getIds(start_page, end_page):
+    ''' this function parses through several pages, collecting 20 ids from each page
+    The two urls are used as the initial template with the page number being squished in there to take us to the needed page
+    This may need work on traversing through all the chapters
+    '''
     url = 'https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&exclude_work_search%5Bfreeform_ids%5D%5B%5D=110&exclude_work_search%5Bfreeform_ids%5D%5B%5D=176&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2379&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2026&exclude_work_search%5Bfreeform_ids%5D%5B%5D=62&page='
     secondurl = '&page=2&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=revised_at&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D='
-    workName = []
     ids = []
-    start_page = 4
-    end_page = 6
     print("In get contents")
-    for i in range(start_page, end_page):
+    for page in range(start_page, end_page):
         print(len(ids))
-        url = url+str(i)+secondurl
+        url = url+str(page)+secondurl
         page = requests.get(url)
         # print(page.content)
         soup = BeautifulSoup(page.content)
@@ -61,7 +58,14 @@ def getIds():
     return ids
 
 
+# TO-DO: see how untagged things are stored
+# TO-DO: Explore one chapter vs multiple chapter fiction
+# TO-DO: Double check that this is in the same place for all pages
 def getPageInfo(url, id):
+    ''' finds contents, and helpful tags associated, marking with category
+    Gets first chapter and throws in in text file along with tags
+    This needs try excepts because of None type issues
+    '''
     page = requests.get(url)
     soup = BeautifulSoup(page.content)
     results = soup.find("div", {"class": "workskin"})
@@ -118,6 +122,9 @@ def get_tags(article):
 
 
 def get_summary(article):
+    '''This is either an exerpt from the fic, or an author's summary
+    This may include something about how the author writes
+    '''
     try:
         out = article.find(
             'blockquote', {'class': 'userstuff summary'}).text.strip()
@@ -127,6 +134,8 @@ def get_summary(article):
 
 
 def open_fic(work_id, headers):
+    ''' Processes unique work ID into a soup to use
+    '''
     url = 'https://archiveofourown.org' + work_id + \
         '?view_adult=true&show_comments=true&view_full_work=true'
     req = urllib.request.Request(url, headers=headers)
@@ -136,24 +145,22 @@ def open_fic(work_id, headers):
     time.sleep(5)
     return bs
 
-# when there's one or none page of comments
-
 
 def main():
-    header = ['Title', 'Author', 'ID', 'Date_updated', 'Rating', 'Pairing', 'Warning', 'Complete',
-              'Language', 'Word_count', 'Num_chapters', 'Num_comments', 'Num_kudos', 'Num_bookmarks', 'Num_hits']
-    with open('SomeName.csv', 'w', encoding='utf8') as f:
-        writer = csv.writer(f)
-        writer.writerow(header)
-    print("In main requesting")
-    # getContent('https://archiveofourown.org/tags/Birds%20of%20Prey%20(TV)/works?page=', 1, 5)
+    # this part is not ready, might be eventually useful to consolidate info into one file
+    # header = ['Title', 'Author', 'ID', 'Date_updated', 'Rating', 'Pairing', 'Warning', 'Complete',
+    #          'Language', 'Word_count', 'Num_chapters', 'Num_comments', 'Num_kudos', 'Num_bookmarks', 'Num_hits']
+    # with open('SomeName.csv', 'w', encoding='utf8') as f:
+    #    writer = csv.writer(f)
+    #    writer.writerow(header)
 
-    ids = getIds()
+    # processing information on certain pages and then every work content is processed
+    print("In main requesting")
+    ids = getIds(14, 20)
     for i in range(1, len(ids)):
         pageName = 'https://archiveofourown.org/works/' + \
             str(ids[i]) + '?view_adult=true'
         getPageInfo(pageName, ids[i])
-        # process_basic(pageName)
 
 
 if __name__ == "__main__":
