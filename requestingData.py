@@ -6,7 +6,7 @@ from requests.packages.urllib3.util import Retry
 from requests.adapters import HTTPAdapter
 import csv
 import time
-
+import pandas as pd
 from bs4 import BeautifulSoup
 import re
 
@@ -27,6 +27,8 @@ session.mount('https://', adapter)
 # insert header here like: headers = {'user-agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_2) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15'}
 headers = {'user-agent': 'Chrome/99.0.4844.82 (Lenovo; IdeaPad 5 15IIL05)'}
 url = 'https://archiveofourown.org/tags/Birds%20of%20Prey%20(TV)/works?page='
+#url = 'https://archiveofourown.org/works?work_search%5Bsort_column%5D=revised_at&include_work_search%5Brating_ids%5D%5B%5D=10&include_work_search%5Barchive_warning_ids%5D%5B%5D=16&include_work_search%5Barchive_warning_ids%5D%5B%5D=14&work_search%5Bother_tag_names%5D=&exclude_work_search%5Brating_ids%5D%5B%5D=13&exclude_work_search%5Brating_ids%5D%5B%5D=12&exclude_work_search%5Barchive_warning_ids%5D%5B%5D=19&exclude_work_search%5Barchive_warning_ids%5D%5B%5D=20&work_search%5Bexcluded_tag_names%5D=&work_search%5Bcrossover%5D=&work_search%5Bcomplete%5D=&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bquery%5D=&work_search%5Blanguage_id%5D=&commit=Sort+and+Filter&tag_id=Marvel'
+#url = 'https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&exclude_work_search%5Barchive_warning_ids%5D%5B%5D=19&exclude_work_search%5Barchive_warning_ids%5D%5B%5D=20&exclude_work_search%5Brating_ids%5D%5B%5D=13&exclude_work_search%5Brating_ids%5D%5B%5D=12&include_work_search%5Barchive_warning_ids%5D%5B%5D=16&include_work_search%5Barchive_warning_ids%5D%5B%5D=14&include_work_search%5Brating_ids%5D%5B%5D=10&page=2&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=revised_at&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D='
 
 req = urllib.request.Request(url, headers=headers)
 resp = urllib.request.urlopen(req)
@@ -35,27 +37,25 @@ endpage = 0
 
 
 def getIds():
-    url = 'https://archiveofourown.org/tags/Birds%20of%20Prey%20(TV)/works?page='
+    url = 'https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&exclude_work_search%5Barchive_warning_ids%5D%5B%5D=19&exclude_work_search%5Barchive_warning_ids%5D%5B%5D=20&exclude_work_search%5Brating_ids%5D%5B%5D=13&exclude_work_search%5Brating_ids%5D%5B%5D=12&include_work_search%5Barchive_warning_ids%5D%5B%5D=16&include_work_search%5Barchive_warning_ids%5D%5B%5D=14&include_work_search%5Brating_ids%5D%5B%5D=10&page='
+    secondurl = '&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=revised_at&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D='
+    #url = 'https://archiveofourown.org/tags/Birds%20of%20Prey%20(TV)/works?page='
     workName = []
     ids = []
-    end_page = 2
+    end_page = 20
     print("In get contents")
     for i in range(1, end_page):
-        print(i)
-        url = url+str(i)
+        print(len(ids))
+        url = url+str(i)+secondurl
         page = requests.get(url)
         # print(page.content)
         soup = BeautifulSoup(page.content)
-        results = soup.find("div", {"class": "works-index filtered region"})
-
-        newResults = results.find_all("ol", {"class": "work index group"})
-
-        for article in results.find_all('li', {'role': 'article'}):
-            workName.append(article.find(
-                'h4', {'class': 'heading'}).find('a').text)
-            ids.append(article.find('h4', {'class': 'heading'}).find(
-                'a').get('href')[7:])
-        time.sleep(5)
+        # ids.append(article.find('h4', {'class':'heading'}).find('a').get('href')[7:])
+        for article in soup.find_all('li', {'role': 'article'}):
+            item = article.find('h4', {'class': 'heading'}).find(
+                'a').get('href')[7:]
+            if item is not None:
+                ids.append(item)
     return ids
 
 
@@ -65,90 +65,44 @@ def getPageInfo(url, id):
     results = soup.find("div", {"class": "workskin"})
     # content = results.find('div', {'id': 'chapters'})
     someText = str(id) + ".txt"
-    content = soup.find('div', {'id': 'chapters'}).text.strip()
-    print(content)
-    language = soup.find('dd', {'class': 'language'}).text
-    if language == "en-US":
-        with open(someText, 'w') as f:
+    content = soup.find('div', {'id': 'chapters'})
+    #language = soup.find('dd', {'class': 'language'}).text
+    relationship = soup.find('dd', {'class': 'relationship tags'})
+    freeform = soup.find('dd', {'class': 'freeform tags'})
+    fandom = soup.find('dd', {'class': 'relationship tags'})
+    if content is not None:
+        content = content.text.strip()
+        with open(someText, 'w', encoding="utf-8") as f:
             for item in content:
                 f.write(item)
             f.write("\n")
+            f.write("[starting tags]")
+            f.write("\n")
+            f.write("relationship: ")
+            try:
+                for i in relationship.text:
+                    f.write(i)
+            except:
+                f.write("None")
+            f.write("\n")
+            f.write("freeform: ")
+            try:
+                for i in freeform.text:
+                    f.write(i)
+
+            except:
+                f.write("None")
+            f.write("\n")
+            f.write("fandom: ")
+            try:
+                for i in fandom.text:
+                    f.write(i)
+
+            except:
+                f.write("None")
+            f.write("\n")
             f.close()
-    else:
-        return "not in English"
-
-
-def process_basic(page_content):
-    bs = BeautifulSoup(page_content, 'lxml')
-    titles = []
-    authors = []
-    ids = []
-    date_updated = []
-    ratings = []
-    pairings = []
-    warnings = []
-    complete = []
-    languages = []
-    word_count = []
-    chapters = []
-    comments = []
-    kudos = []
-    bookmarks = []
-    hits = []
-
-    for article in bs.find_all('li', {'role': 'article'}):
-        titles.append(article.find('h4', {'class': 'heading'}).find('a').text)
-        try:
-            authors.append(article.find('a', {'rel': 'author'}).text)
-        except:
-            authors.append('Anonymous')
-        ids.append(article.find('h4', {'class': 'heading'}).find(
-            'a').get('href')[7:])
-        date_updated.append(article.find('p', {'class': 'datetime'}).text)
-        ratings.append(article.find(
-            'span', {'class': re.compile(r'rating\-.*rating')}).text)
-        pairings.append(article.find(
-            'span', {'class': re.compile(r'category\-.*category')}).text)
-        warnings.append(article.find(
-            'span', {'class': re.compile(r'warning\-.*warnings')}).text)
-        complete.append(article.find(
-            'span', {'class': re.compile(r'complete\-.*iswip')}).text)
-        languages.append(article.find('dd', {'class': 'language'}).text)
-        count = article.find('dd', {'class': 'words'}).text
-        if len(count) > 0:
-            word_count.append(count)
-        else:
-            word_count.append('0')
-        chapters.append(article.find(
-            'dd', {'class': 'chapters'}).text.split('/')[0])
-        try:
-            comments.append(article.find('dd', {'class': 'comments'}).text)
-        except:
-            comments.append('0')
-        try:
-            kudos.append(article.find('dd', {'class': 'kudos'}).text)
-        except:
-            kudos.append('0')
-        try:
-            bookmarks.append(article.find('dd', {'class': 'bookmarks'}).text)
-        except:
-            bookmarks.append('0')
-        try:
-            hits.append(article.find('dd', {'class': 'hits'}).text)
-        except:
-            hits.append('0')
-
-    df = pd.DataFrame(list(zip(titles, authors, ids, date_updated, ratings, pairings,
-                               warnings, complete, languages, word_count, chapters,
-                               comments, kudos, bookmarks, hits)))
-
-    print('Successfully processed', len(df), 'rows!')
-
-    with open('SomeName.csv', 'a', encoding='utf8') as f:
-        df.to_csv(f, header=False, index=False)
-    temp = pd.read_csv('SomeName.csv')
-    print('Now we have a total of', len(temp), 'rows of data!')
-    print('================================')
+    time.sleep(5)
 
 
 def get_tags(article):
@@ -197,6 +151,7 @@ def main():
         pageName = 'https://archiveofourown.org/works/' + \
             str(ids[i]) + '?view_adult=true'
         getPageInfo(pageName, ids[i])
+        # process_basic(pageName)
 
 
 if __name__ == "__main__":
