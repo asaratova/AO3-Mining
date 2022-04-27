@@ -1,6 +1,7 @@
 import os
 from collections import Counter 
 import matplotlib.pyplot as plt
+import math
 
 valid_tags = ['Abduction',
  'Abuse',
@@ -255,10 +256,30 @@ print("Total # of Files: ", numFiles)
 
 # used to plot percent valid tags
 
+# fig, ax = plt.subplots()
+# ax.bar(x,y)
+# plt.setp( ax.xaxis.get_majorticklabels(), rotation=45, ha="right" )
+# plt.xticks(rotation = 45, size = 7)
+# plt.title("Percent of Tags that are Valid for Each Fanfiction")
+# plt.xlabel("Fanfiction ID")
+# plt.ylabel("Percentage of Valid Tags")
+# plt.savefig("percentValid_plot.png", bbox_inches='tight')
+
 fig, ax = plt.subplots()
-ax.bar(x,y)
-plt.setp( ax.xaxis.get_majorticklabels(), rotation=45, ha="right" )
-plt.xticks(rotation = 45, size = 7)
+
+x = [i/10 for i in range(10)]
+new_y = [0 for _ in range(10)]
+
+for perc in y:
+    if float(perc) == 1:
+        new_y[9] += 1
+    else:
+        new_y[math.floor(float(perc) * 10)] += 1
+
+y = new_y
+ax.bar(x,y, width=0.1, align="edge")
+# plt.setp( ax.xaxis.get_majorticklabels(), rotation=45, ha="right" )
+# plt.xticks(rotation = 45, size = 7)
 plt.title("Percent of Tags that are Valid for Each Fanfiction")
 plt.xlabel("Fanfiction ID")
 plt.ylabel("Percentage of Valid Tags")
@@ -270,15 +291,16 @@ plt.savefig("percentValid_plot.png", bbox_inches='tight')
 x = []
 y = []
 
-for tag in validTagsCnt:
-    x.append(tag)
-    y.append(validTagsCnt[tag])
+for tag in validTagsCnt.most_common()[:20]:
+
+    x.append(tag[0])
+    y.append(tag[1])
 
 fig, ax = plt.subplots()
 ax.bar(x,y)
 plt.setp( ax.xaxis.get_majorticklabels(), rotation=45, ha="right" )
 plt.xticks(rotation = 45, size = 7)
-plt.title("Valid Tag Frequency for Subset of Fanfiction")
+plt.title("20 Most Frequent Valid Tags for Subset of Fanfiction")
 plt.xlabel("Tag Label")
 plt.ylabel("Number of Times Each Tag Appeared")
 plt.savefig("tagFrequency_plot.png", bbox_inches='tight')

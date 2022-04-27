@@ -9,6 +9,7 @@ import time
 import pandas as pd
 from bs4 import BeautifulSoup
 import re
+from collections import Counter
 
 import os
 import shutil
@@ -42,13 +43,13 @@ def getIds(start_page, end_page):
     The two urls are used as the initial template with the page number being squished in there to take us to the needed page
     This may need work on traversing through all the chapters
     '''
-    url = 'https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&exclude_work_search%5Bfreeform_ids%5D%5B%5D=110&exclude_work_search%5Bfreeform_ids%5D%5B%5D=176&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2379&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2026&exclude_work_search%5Bfreeform_ids%5D%5B%5D=62&page='
-    secondurl = '&page=2&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=revised_at&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D='
+    original_url = 'https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&exclude_work_search%5Bfreeform_ids%5D%5B%5D=110&exclude_work_search%5Bfreeform_ids%5D%5B%5D=176&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2379&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2026&exclude_work_search%5Bfreeform_ids%5D%5B%5D=62&page='
+    secondurl = '&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=revised_at&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D='
     ids = []
     print("In get contents")
     for page in range(start_page, end_page):
         print(len(ids))
-        url = url+str(page)+secondurl
+        url = original_url+str(page)+secondurl
         page = requests.get(url)
         # print(page.content)
         soup = BeautifulSoup(page.content, features="html.parser")
@@ -69,6 +70,7 @@ def getPageInfo(url, id):
     Gets first chapter and throws in in text file along with tags
     This needs try excepts because of None type issues
     '''
+    print("\nURL: ", url)
     page = requests.get(url)
     soup = BeautifulSoup(page.content, features="html.parser")
     results = soup.find("div", {"class": "workskin"})
@@ -120,6 +122,8 @@ def getPageInfo(url, id):
                 f.write("None")
             f.write("\n")
             f.close()
+    
+    print("Finished reading a file")
     time.sleep(5)
 
 
@@ -168,17 +172,24 @@ def main():
 
     # processing information on certain pages and then every work content is processed
     print("In main requesting")
-    start_id = 30
-    end_id = 40
+
+    # Must start at 1
+    start_id = 1
+    end_id = 20
 
     ids = getIds(start_id, end_id)
+    print(Counter(ids))
     for i in range(1, len(ids)):
         pageName = 'https://archiveofourown.org/works/' + \
             str(ids[i]) + '?view_adult=true'
         getPageInfo(pageName, ids[i])
 
     path = "./data"
-    os.mkdir(path)
+    try:
+        os.mkdir(path)
+    except:
+        print("Data directory already made.")
+
     for root, dirs, files in os.walk("."):
         for file in files:
             if file[-3:] == "txt":
