@@ -10,6 +10,9 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import re
 
+import os
+import shutil
+
 from html.parser import HTMLParser
 
 
@@ -48,7 +51,7 @@ def getIds(start_page, end_page):
         url = url+str(page)+secondurl
         page = requests.get(url)
         # print(page.content)
-        soup = BeautifulSoup(page.content)
+        soup = BeautifulSoup(page.content, features="html.parser")
         # ids.append(article.find('h4', {'class':'heading'}).find('a').get('href')[7:])
         for article in soup.find_all('li', {'role': 'article'}):
             item = article.find('h4', {'class': 'heading'}).find(
@@ -67,7 +70,7 @@ def getPageInfo(url, id):
     This needs try excepts because of None type issues
     '''
     page = requests.get(url)
-    soup = BeautifulSoup(page.content)
+    soup = BeautifulSoup(page.content, features="html.parser")
     results = soup.find("div", {"class": "workskin"})
     # content = results.find('div', {'id': 'chapters'})
     someText = str(id) + ".txt"
@@ -79,30 +82,39 @@ def getPageInfo(url, id):
     if content is not None:
         content = content.text.strip()
         with open(someText, 'w', encoding="utf-8") as f:
+            max_lines = 5000
+            cur_line = 0
             for item in content:
-                f.write(item)
+                if cur_line > max_lines:
+                    break
+                if item != "\n" or item != "":
+                    f.write(item)
+                    cur_line += 1
             f.write("\n")
             f.write("[starting tags]")
             f.write("\n")
-            f.write("relationship: ")
+            f.write("relationship: \n")
             try:
-                for i in relationship.text:
-                    f.write(i)
+                for i in relationship.strings:
+                    if i != "\n":
+                        f.write(i + "\n")
             except:
                 f.write("None")
             f.write("\n")
-            f.write("freeform: ")
+            f.write("freeform: \n")
             try:
-                for i in freeform.text:
-                    f.write(i)
+                for i in freeform.strings:
+                    if i != "\n":
+                        f.write(i + "\n")
 
             except:
                 f.write("None")
             f.write("\n")
-            f.write("fandom: ")
+            f.write("fandom: \n")
             try:
-                for i in fandom.text:
-                    f.write(i)
+                for i in fandom.strings:
+                    if i != "\n":
+                        f.write(i + "\n")
 
             except:
                 f.write("None")
@@ -156,12 +168,21 @@ def main():
 
     # processing information on certain pages and then every work content is processed
     print("In main requesting")
-    ids = getIds(14, 20)
+    start_id = 30
+    end_id = 40
+
+    ids = getIds(start_id, end_id)
     for i in range(1, len(ids)):
         pageName = 'https://archiveofourown.org/works/' + \
             str(ids[i]) + '?view_adult=true'
         getPageInfo(pageName, ids[i])
 
+    path = "./data"
+    os.mkdir(path)
+    for root, dirs, files in os.walk("."):
+        for file in files:
+            if file[-3:] == "txt":
+                shutil.move(root + "/" + file, path)
 
 if __name__ == "__main__":
     main()
