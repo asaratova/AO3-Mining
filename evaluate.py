@@ -208,8 +208,6 @@ def filter(tag_list, valid = False):
         return [i for i in tag_list if i != "" and i != " " and i != "\n" and i in valid_tags] 
     return [i for i in tag_list if i != "" and i != " " and i != "\n"]
 
-print(len(valid_tags))
-
 allTagsCnt = Counter()
 validTagsCnt = Counter()
 
@@ -222,8 +220,11 @@ validTagsCnt = Counter()
 #     filtered_tags = filter(tags_separated)
 #     cnt += Counter(filtered_tags)
 
-
+x = []
+y = []
+numFiles = 0
 for root, dirs, files in os.walk("./data"):
+    numFiles = len(files)
     for file in files:
         if file[-3:] == "txt":
             with open(root + "/" + file) as f:
@@ -233,8 +234,51 @@ for root, dirs, files in os.walk("./data"):
                 freeform_tags = all_text[freeform_index:fandom_index]
                 tags_separated = freeform_tags.split("\n")
                 filtered_tags = filter(tags_separated, True)
-                allTagsCnt += Counter(filter(tags_separated))
-                validTagsCnt += Counter(filtered_tags)
 
-print(sum(allTagsCnt.values()))
-print(sum(validTagsCnt.values()))
+                allTagsCntCur = Counter(filter(tags_separated))
+                allTagsCnt += allTagsCntCur
+
+                validTagsCntCur = Counter(filtered_tags)
+                validTagsCnt += validTagsCntCur
+
+                numValid = round(sum(validTagsCntCur.values()), 4)
+                numTags = round(sum(allTagsCntCur.values()), 4)
+                
+                if numTags > 0:
+                    x.append(file[:-4])
+                    y.append(numValid / numTags)
+
+
+print("Total # of Tags Found: ", sum(allTagsCnt.values()))
+print("Total # of Valid Tags Found: ", sum(validTagsCnt.values()))
+print("Total # of Files: ", numFiles)
+
+# used to plot percent valid tags
+
+fig, ax = plt.subplots()
+ax.bar(x,y)
+plt.setp( ax.xaxis.get_majorticklabels(), rotation=45, ha="right" )
+plt.xticks(rotation = 45, size = 7)
+plt.title("Percent of Tags that are Valid for Each Fanfiction")
+plt.xlabel("Fanfiction ID")
+plt.ylabel("Percentage of Valid Tags")
+plt.savefig("percentValid_plot.png", bbox_inches='tight')
+
+
+# Used to plot frequency of tags
+
+x = []
+y = []
+
+for tag in validTagsCnt:
+    x.append(tag)
+    y.append(validTagsCnt[tag])
+
+fig, ax = plt.subplots()
+ax.bar(x,y)
+plt.setp( ax.xaxis.get_majorticklabels(), rotation=45, ha="right" )
+plt.xticks(rotation = 45, size = 7)
+plt.title("Valid Tag Frequency for Subset of Fanfiction")
+plt.xlabel("Tag Label")
+plt.ylabel("Number of Times Each Tag Appeared")
+plt.savefig("tagFrequency_plot.png", bbox_inches='tight')
