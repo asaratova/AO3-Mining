@@ -280,9 +280,9 @@ y = new_y
 ax.bar(x,y, width=0.1, align="edge")
 # plt.setp( ax.xaxis.get_majorticklabels(), rotation=45, ha="right" )
 # plt.xticks(rotation = 45, size = 7)
-plt.title("Percent of Tags that are Valid for Each Fanfiction")
-plt.xlabel("Fanfiction ID")
-plt.ylabel("Percentage of Valid Tags")
+plt.title("Number of Fanfictions that Had a Certian Percentage of Valid Tags")
+plt.xlabel("Percent of Tags that are Valid")
+plt.ylabel("Number of Fanfictions")
 plt.savefig("percentValid_plot.png", bbox_inches='tight')
 
 
