@@ -43,8 +43,8 @@ def getIds(start_page, end_page):
     The two urls are used as the initial template with the page number being squished in there to take us to the needed page
     This may need work on traversing through all the chapters
     '''
-    original_url = 'https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&exclude_work_search%5Bfreeform_ids%5D%5B%5D=110&exclude_work_search%5Bfreeform_ids%5D%5B%5D=176&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2379&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2026&exclude_work_search%5Bfreeform_ids%5D%5B%5D=62&page='
-    secondurl = '&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=revised_at&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D='
+    original_url = "https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&page="
+    secondurl = "&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=en&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=hits&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D="
     ids = []
     print("In get contents")
     for page in range(start_page, end_page):
@@ -122,7 +122,7 @@ def getPageInfo(url, id):
                 f.write("None")
             f.write("\n")
             f.close()
-    
+
     print("Finished reading a file")
     time.sleep(5)
 
@@ -174,8 +174,8 @@ def main():
     print("In main requesting")
 
     # Must start at 1
-    start_id = 1
-    end_id = 20
+    start_id = 75
+    end_id = 100
 
     ids = getIds(start_id, end_id)
     print(Counter(ids))
@@ -193,7 +193,11 @@ def main():
     for root, dirs, files in os.walk("."):
         for file in files:
             if file[-3:] == "txt":
-                shutil.move(root + "/" + file, path)
+                try:
+                    shutil.move(root + "/" + file, path)
+                except:
+                    print("File already exists")
+
 
 if __name__ == "__main__":
     main()
