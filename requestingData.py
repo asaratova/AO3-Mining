@@ -174,8 +174,8 @@ def main():
     print("In main requesting")
 
     # Must start at 1
-    start_id = 75
-    end_id = 100
+    start_id = 125
+    end_id = 400
 
     ids = getIds(start_id, end_id)
     print(Counter(ids))
@@ -183,6 +183,8 @@ def main():
         pageName = 'https://archiveofourown.org/works/' + \
             str(ids[i]) + '?view_adult=true'
         getPageInfo(pageName, ids[i])
+        if i % 20 == 0:
+            print(i)
 
     path = "./data"
     try:

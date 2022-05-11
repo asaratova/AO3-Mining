@@ -1,0 +1,77 @@
+Chapter 1: Access Granted
+    
+
+
+
+
+Chapter Text
+Maya hadn't intended Extremis to be as neural as Tony had made it.This had...consequences."Look, Tony," she said, throwing up her hands while he ran through the tests, "don't blame me if you have integer overruns. I didn't design this. What the hell is this?!""Eye tracking? It's an input module--""Do you even know how the human visual system works?  What am I saying, of course you don't. No one does! Well guess what, yours doesn't work that way any more, so it's all water under the bridge now!" she ranted, stabbing the control pad with a little more force than necessary."Maya…" Tony rubbed his forehead. "You're going at this wrong. Extremis doesn't replace the analog processing. It runs in parallel on the nanobot network, crunches a hell of a lot of information, and filters the results to a form my existing systems can handle. I didn't want to have to learn to think again, I'm not that crazy.""No, you," she pointed the stylus at him,"you do not understand. Shut up, neurobiologist is speaking. The brain adapts. The brain is not going to keep two parallel processes for the same task, not where it can have one. There's a hell of a lot about human wetware we don't understand. Sensory information goes in, consciousness comes out, what the fuck happens in the middle who the fuck knows? And now you grafted a brand-new black box onto the existing one, and whatever unholy merger happens in there, you won't even know what the dependencies are.""...Are you done?" he said after a minute, putting his head down on his arms. "I stopped Mallon, I'm not dead, I'm not crazy.""No," she muttered unhappily. "All these base-level extensions you wrote are killing me. Look at this shit. Okay, don't move, but I want you to imagine yourself sitting back up."He raised an eyebrow and complied. Nothing happened."This one labeled PROPRI really is proprioception? You gave Extremis a proprioception buffer. You gave Extremis read/write access to your sense of your body's posture and position in space. What the hell kind of other input could you possibly receive through that channel? In what world is this a good idea?""Okay, enough," he said. After reaching this point conversations rarely went anywhere worthwhile. "TL;DR, Doctor Hansen, give me your neurobiologist opinion. What effects do you think I might expect from the interaction of Extremis with the rest of my systems over time?"XXXXXXXXXXXJARVIS had not been impressed, the day Tony returned to the Malibu labs after defeating Mallon. Three days in a data-sealed bunker, while code rewritten in an injury-rushed frenzy of biology-meets-technology tore Tony apart, had been bad enough. Launching straight into a fight afterward?JARVIS had been, understandably, concerned.Tony may have...underestimated the force of JARVIS' affections and concerns."Not you too," Tony groaned, letting the gold undersuit go. It sank away into his skin, and the suit formed up against the far wall, tall and stern but solidly comforting. His network connections were tight, closed up and gummed over with the hasty firewalls he'd thrown up against simultaneously watching Jersey Shore and the DoD's collective porn load. That was not what he'd designed those satellites for--
+Allow me, sir.
+Like plunging under water, the noise dimmed, replaced by the infinitely familiar/unfamiliar grasp of the AI. They were inside house defenses, which in a very real way meant inside JARVIS; Tony had known but not really known till now, in the ringing silence, just how thoroughly J claimed his territory.JARVIS approached Extremis carefully, justifiably wary of its automatic defenses after watching the system repulse attack after attack once the shadier government agencies realized where Extremis was now. Who it was. They exchanged keys, public-private, in three successive dances of longer bit length, and then JARVIS was authorized and in, and Extremis lowered the walls to him, satisfied, and drew out of the way.Tony exhaled in relief and granted JARVIS root access. He'd had to step in and control too many base processes manually in the last thirty hours; thrilling for a while sure, after that more terrifying and exhausting, holding the line alone. He'd opened a root user login session a few minutes after waking up alive, intending just a couple adjustments, and ended up having to do so much runtime jury-rigging that in violation of all best practices and common sense it was still open now. He let JARVIS trace the log and recoil at the near-continuous timestamps, and then finally, ceremoniously closed the session. Environments didn't come more secure than this. If something came up, he wouldn't need to patch himself on the fly.JARVIS shifted his attention--it was strange to feel that--and slowly and gently, with Tony's full cooperation, he pulled the code blocking up Tony's new digital 'senses' and eased open all his ports, soothing away a very physical tension.Tony groaned, because jesus, Ex
+[starting tags]
+relationship: 
+Jarvis (Iron Man movies)/Tony Stark
+Jarvis (Iron Man movies)/Steve Rogers/Tony Stark
+Pepper Potts/Tony Stark
+
+freeform: 
+Extremis
+AI Feels
+Bot Feels
+Tech Feels
+Human Feels
+all the feels
+unrepentant Extremis porn
+it had to be done
+Exactly What It Says on the Tin
+no computers were harmed in the writing of this fic
+Not Iron Man 3 Compliant
+Phone Sex
+wireless sex
+Polyamory Negotiations
+Emotional Hurt/Comfort
+Touch-Starved
+Sub Tony
+Dom Jarvis
+Team Feels
+Tentacles
+Consentacles
+Subspace
+blowjob
+Aftercare
+Whump
+Hurt/Comfort
+Hurt Tony Stark
+Action
+Kink Negotiation
+Rope Bondage
+Object Insertion
+Subdrop
+Switch Steve
+Topdrop
+Dom Pepper Potts
+Sensory Deprivation
+Collars
+Cooking
+Pillow & Blanket Forts
+Clint the consultant on nest building
+Dom/sub
+Dom/sub Play
+Dom/sub negotiation
+Safeword Use
+Servicing kink
+Armor Kink
+Armor Bondage
+Armor Porn
+Breathplay
+Face-Fucking
+Rimming
+Videoconferences
+Hostage Situation
+Magical Healing Emotionally Healthy Relationship
+
+fandom: 
+Jarvis (Iron Man movies)/Tony Stark
+Jarvis (Iron Man movies)/Steve Rogers/Tony Stark
+Pepper Potts/Tony Stark
+

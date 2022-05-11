@@ -1,0 +1,47 @@
+Chapter 1: 'S's and 'O's
+    
+
+
+
+
+Chapter Text
+Bruce had been vaguely aware that Stark Industries had a line of Hulkbusters going on, but he didn't think it merited much attention; no weapons could ever make a dent in the Other Guy, and he didn't expect Stark Industries to be able to come up with much now with Tony Stark gone. Stark had been renowned for his brilliance and engineering prowess, but he had not been a great teacher, so there was nobody left to continue his unique brand of genius.It wasn't until the third generation of Stark Industries Hulkbusters were deployed and Bruce woke up with a headache that he decided to learn more about the weapons. The headache wasn't much--just a dull, throbbing ache at his temples--but he hadn't even felt anything after waking up from swallowing a bullet, so these weapons were certainly getting somewhere.Thus, on a rainy evening a few days after he wandered into Kunming, he sauntered into an internet café to take a look at Stark Industries’ encryption systems.He felt the Other Guy growl in his mind in response to the thought of finding the Hulkbusters.Go back to sleep, Bruce thought back at him. I'm not actually going to hurt you. You don't want this stuff in the hands of Ross and his ilk do you?The Other Guy frowned at that, but quieted down.The Stark Industries security system was well-known to be robust, but in a gigantic company that allowed all long-term software engineers SSH access, there will always be that employee who uses the system irresponsibly and leaves security holes to exploit. So Bruce patiently worked up the ranks, gaining security clearances one level at a time. It took hours of wading through horrible code written by fledglings who did not understand the concept of code documentation or seasoned programmers who still thought in Fortran.It was well past midnight when he finally reached the security clearance to see the Hulkbusters. By then, the only other people in the smoke-filled internet café were high-school and college-aged boys taking advantage of the high speed internet to play Starcraft all night.What he found made it all worth it, not only because that had been his goal, but also because the code itself was beautiful. The first commits to the project were all, of course, by the great Tony Stark himself, and they were a genuine pleasure to read-- from a small, but perfectly fitting implementation of quick-sort to publication-worthy advances in linear programming, not a single task was done in anything but the most clear and efficient way possible.Bruce almost lamented the fact that the date-stamps on the code were approaching Stark’s capture in June of 2008, for he knew that there would be no code of that level of beauty for the later Hulkbuster projects.Yet again, he found himself surprised. There had indeed been a hiatus on the project for the months after Stark’s captivity in Afghanistan, which continued after he returned and shut down the weapons industry, but two months after that (and seven weeks after Stark’s unfortunate lab accident), there were commits again to the code. Commits that were less frequent and occasionally awkward, but essentially of the same engineering quality as Stark’s own.Bruce looked up the data on who was making these commits and found that they were coming from a man named Obadiah Stane, the new CEO of Stark Industries.Where did you learn to code like that, Mr. Stane? Bruce wondered. Still, he appreciated the elegant coding style and in no time, he was immersed in the inventiveness of the new generation of weapons.It was nearly dawn and even the Starcraft group had gone to bed when Bruce stumbled across an oddity in the code.“for(int s=0; s < infty; s++)”, he read.“Tsk, tsk, Stane,” Bruce muttered with a smile. “De-allocating ‘s’ from being a string to use it as a dummy integer? When ‘i’, ‘j’, and ‘k’ are all still available? ”He read on and thought no more of it until he stumbled a few lines later on another loop with ‘o’ as a dummy integer.What? ‘o’? Bruce thought. Who the hell uses ‘o’ as a dummy integer? Or any integer? Either I’m losing my mind, or you are, Stane.Suddenly Bruce was struck by a thought. There had been some odd things about Stane’s code-- an unexplained extra loop here, an unhelpful comment there.  As a theoretical physicist, Bruce hadn’t really cared about the small idiosyncrasies, but these were odd habits for a programmer coding for the long term.Curiosity piqued, he decided to go through the code and look for a pattern. He compiled all of the dummy variables and comments in Stane’s code since Stark’s death.What he found convinced him that either he had gone entirely mad, or the code really was trying to tell him something. Every fifth dummy variable was either an ‘o’ or an ‘s’, and they alternated between those two letters. In the occasion when such a letter was needed but was already in use, it would be replaced with a capital version.s... o... s... O... Someone was definitely trying 
+[starting tags]
+relationship: 
+Bruce Banner/Tony Stark
+Bruce Banner & Tony Stark
+Happy Hogan/Pepper Potts
+Pepper Potts & Tony Stark
+Obadiah Stane & Tony Stark
+Bruce Banner & Pepper Potts
+Jarvis (Iron Man movies) & Tony Stark
+
+freeform: 
+BAMF Bruce
+BAMF Tony
+BAMF Pepper
+BAMF Happy
+warning: kidnapping
+Science Boyfriends
+Science Bros
+Alternate Universe
+BAMF JARVIS
+Competence
+Smart Is The New Sexy
+warning: mention of attempted suicide
+Confidence Tricks
+impersonation of government officials
+disguises
+Action/Adventure
+Feels
+Heist
+
+fandom: 
+Bruce Banner/Tony Stark
+Bruce Banner & Tony Stark
+Happy Hogan/Pepper Potts
+Pepper Potts & Tony Stark
+Obadiah Stane & Tony Stark
+Bruce Banner & Pepper Potts
+Jarvis (Iron Man movies) & Tony Stark
+

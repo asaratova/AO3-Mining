@@ -1,0 +1,32 @@
+Chapter 1
+
+
+
+
+
+Chapter Text
+Timestamp: 03·05·12_01·15Trigger: Tony hasn't eaten in 12 hours.Run Program: Feed(Tony).Trigger: No food.Run Program: Make(Toast).Running.Running.Running.Kitchen on fire.Timestamp: 03·05·12_01·20Trigger: Kitchen on fire.Run Program: FireExtinguisherRunning.Fire extinguished.Program_FireExtinguisher successfully executed!Timestamp: 03·05·12_01·25Trigger: Tony hasn't eaten in 12 hours.Run Program: Feed(Tony).Trigger: No food.Run SubRoutine: Make(Toast).Running.Running.Running.SubRoutine_Make(Toast) successfully executed!Timestamp: 03·05·12_01·30Trigger: Tony hasn't eaten in 12 hours.Run Program: Feed(Tony).Concat{Food^Toast}Run Program: Feed(Tony_Toast).Running.Running.Running.Tony threw toast on floor.Timestamp: 03·05·12_01·40“Stop trying to make me eat or I will throw you into a dumpster with Steve Job's old laptops you worthless Franken-mongrel.”Trigger: Threat(Tony_Dummy)Run Program: Shame.Trigger  override: “Stop trying to make me eat or I will throw you into a  dumpster with Steve Job's old laptops you worthless Franken-mongrel.”Run Program: NegFeed(Tony).Running.Running.Program_NegFeed(Tony) successfully executed!Timestamp: 03·05·12_01·45Trigger: Tony hasn't eaten in 12.5 hours.Trigger  override: “Stop trying to make me eat or I will throw you into a  dumpster with Steve Job's old laptops you worthless Franken-mongrel.”Trigger: Tony hasn't eaten in 12.5 hours.Trigger  override: “Stop trying to make me eat or I will throw you into a  dumpster with Steve Job's old laptops you worthless Franken-mongrel.”Trigger: Tony hasn't eaten in 12.5 hours.Timestamp: 03·05·12_02·00Trigger: Impact detectedTrigger: Tony in pain.Run program: Move.Run Program: FirstAid(Tony).Trigger: Tony hasn't eaten in 12.5 hours.Trigger  override: “Stop trying to make me eat or I will throw you into a  dumpster with Steve Job's old laptops you worthless Franken-mongrel.”Trigger: Tony hasn't eaten in 12.5 hours.Trigger  override: “Stop trying to make me eat or I will throw you into a  dumpster with Steve Job's old laptops you worthless Franken-mongrel.”“Shit,  you're stuck aren't you? Halting problem my ass, should have included  subroutines to avoid... Hey, hey Dummy, listen up: cancel anything  causing you to loop, just run your normal programs. And get out of my  way.Timestamp: 03·05·12_02·15Trigger: Tony hasn't eaten in 13 hours.Run Program: Feed(Tony_Toast).Running.Tony threw toast at Dummy.Timestamp: 03·05·12_02·20Trigger: Directional specific projectiles subroutine 4.Run program: Catch(Play).Running.Running.Result: Tony left proximity.Program_Catch(Play) canceled.Timestamp: 03·05·12_02·25Trigger: Tony hasn't eaten in 13 hours.Run Pr-Timestamp: 03·05·12_02·25Trigger: JARVISCommunication_<“Master Tony is ordering food, DUM-E. Cancel program: Feed Tony.”>Program canceled.**Timestamp: 03·07·12_12·25Trigger: Tony hasn't eaten in 12 hours.Run Program: Feed(Tony).Trigger: No food.Run Program: Make(Toast).Running.Running.ERROR.No toaster.Run Program: Feed(Tony).Run Subroutine: Toast_NegToasterAnalyzing Kitchen.Concat(negToaster^WaffleIron)Run Program: Feed(Tony).Run Subroutine: Toast_WaffleIronRunning.Running.Kitchen on fire.Timestamp: 03·09·12_14·34Trigger: Tony hasn't eaten in 12 hours.Run Program: Feed(Tony).Trigger: No food.Run Program: Make(Toast).Running.Running.ERROR.No toast.Run Program: Feed Tony.Run SubRoutine: Toast_NegToastConcat{negToast^Pizza}Run Program: Feed Tony.Run SubRoutine: Call(Pizza).Dialing.Dialing.“This is the Pizza Palace, home of the best delivery pizza this side of the Rockies. What can I get you?”Trigger: Phone communication.Run Program: Communicate(Phone).Running.Running.“Uh... hello? Hello? What's all the... did you dial on accident?  Hello! Hey! Buddy! Can you hear me ! Huh? Oh, dunno, some jack-ass butt-dialed, I think. Well all I'm hearing are beeps. Sounds like he's pressing buttons. Okay.  Hey! Hey buddy, I'm hanging up! Yo!  Okay, whatever. You going to see the new Mets-”Dial tone.**Timestamp: 03·15·12_18·00Trigger: Sink full of dishes.Running Program: Clean(Dishes).Running.Running.Running.ERROR.Emergency house shut down.**Timestamp: 03·19·12_13·50Trigger: Tony asleep on workbench.Run Program: Blanket(Tony).Running.Running.Program_Blanket(Tony) successfully executed!**Timestamp: 03·25·12_09·00Trigger: User [Captain Steve Rogers] entered room.Run Program: GreetUser [Captain Steve Rogers].Received: Handshake.Program_GreetUser successfully executed!Timestamp: 03·25·12_09·15Trigger: Tony shouting.Run Program: Protect(Tony_Steve).Running.Running.User [Captain Steve Rogers] left the premises.Program_Protect(Tony_Steve) successfully executed!Timestamp: 03·26·12_09·00Trigger: User [Captain Steve Rogers] entered room.Run Program: GreetUser [Captain Steve Rogers].Run SubRoutine: ShooUser [Captain Steve Rogers].“Hey!  Hey, Dum- Er... I wish you had another name. But, hey, Dummy? Could you  please stop uh... nudging at my shin? I'm... Why are you...”Running.Running.“Oh,  you're upset, a
+[starting tags]
+relationship: 
+Steve Rogers/Tony Stark
+Clint Barton/Phil Coulson
+Jane Foster/Thor
+Jonas (Young Avengers)/Cassie Lang
+Teddy Altman/Billy Kaplan
+
+freeform: 
+Robots
+Developing Relationship
+Humor
+Hurt/Comfort
+Nerdiness
+Baseball
+Coitus Interruptus
+
+fandom: 
+Steve Rogers/Tony Stark
+Clint Barton/Phil Coulson
+Jane Foster/Thor
+Jonas (Young Avengers)/Cassie Lang
+Teddy Altman/Billy Kaplan
+
