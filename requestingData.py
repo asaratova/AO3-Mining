@@ -43,22 +43,13 @@ def getIds(start_page, end_page):
     The two urls are used as the initial template with the page number being squished in there to take us to the needed page
     This may need work on traversing through all the chapters
     '''
-<<<<<<< HEAD
     original_url = "https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&page="
-    secondurl = "&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=en&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=hits&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D="
-=======
-    new_original_url = "https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&page="
-    new_secondurl = "&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=en&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=hits&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D="
-
-    # original_url = 'https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&exclude_work_search%5Bfreeform_ids%5D%5B%5D=110&exclude_work_search%5Bfreeform_ids%5D%5B%5D=176&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2379&exclude_work_search%5Bfreeform_ids%5D%5B%5D=2026&exclude_work_search%5Bfreeform_ids%5D%5B%5D=62&page='
-    # secondurl = '&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=revised_at&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D='
-    
->>>>>>> 62900be1064624119e82c0c59d347f4780c2b60f
+    second_url = "&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=en&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=hits&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D="
     ids = []
     print("In get contents")
     for page in range(start_page, end_page):
         print(len(ids))
-        url = new_original_url+str(page)+new_secondurl
+        url = original_url+str(page)+second_url
         page = requests.get(url)
         # print(page.content)
         soup = BeautifulSoup(page.content, features="html.parser")

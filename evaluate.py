@@ -418,8 +418,8 @@ def extractData(max_ngram=1):
 
 def main():
     # countTags()
-    extractData()
-    # filterData()
+    # extractData()
+    filterData()
 
 
 if __name__ == "__main__":
