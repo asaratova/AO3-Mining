@@ -205,20 +205,22 @@ valid_tags = ['Abduction',
               'War Weapons',
               'Weather',
               'Whump']
+# valid_tags_lower = [word.lower() for word in valid_tags]
 num_valid_tags = len(valid_tags)
 tag_dict = dict([(w, i) for (i, w) in enumerate(valid_tags)])
 
 
-def filter(tag_list, valid=False):
+def filter(tag_list, valid=True):
     if valid:
         return [i for i in tag_list if i != "" and i != " " and i != "\n" and i in valid_tags]
     return [i for i in tag_list if i != "" and i != " " and i != "\n"]
 
 
 def filterData():
+    numFiles = 0
+    numRemoved = 0
     for root, _, files in os.walk("./data"):
         numFiles = len(files)
-        numRemoved = 0
         for i, file in enumerate(files):
             if file[-3:] == "txt":
                 with open(root + "/" + file, encoding="utf-8") as f:
@@ -233,16 +235,6 @@ def filterData():
                     starting_tags_index = all_text.index("[starting tags]")
                     # This is the actual text
                     fic_text = all_text[chaptertext_index:starting_tags_index]
-                    if len(fic_text) < 100:
-                        # print(fic_text)
-                        # print(len(fic_text))
-                        # print(file)
-                        numRemoved += 1
-                        os.remove(root + "/" + file)
-
-                    if fic_text is None or fic_text == " " or fic_text == ":" or fic_text == "\n":
-                        numRemoved += 1
-                        os.remove(root + "/" + file)
 
                     # Extract relevant tags from fanfiction
                     # Account for length of freeform
@@ -252,7 +244,9 @@ def filterData():
                     tags_separated = freeform_tags.split("\n")
                     filtered_tags = filter(tags_separated)
 
-                    if filtered_tags is None or filtered_tags == []:
+                    if len(fic_text) < 100 or fic_text is None or fic_text == " " or filtered_tags == ["None"]\
+                         or fic_text == ":" or fic_text == "\n" or filtered_tags is None\
+                              or filtered_tags == []:
                         numRemoved += 1
                         os.remove(root + "/" + file)
 
@@ -262,7 +256,6 @@ def filterData():
 
 
 def countTags():
-
     allTagsCnt = Counter()
     validTagsCnt = Counter()
 
