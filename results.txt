@@ -1,0 +1,11 @@
+Total Correct: 15
+Total Predicted Tags: 30
+Total Actual Tags: 235
+False Positives: 15
+True Positives: 15
+False Negatives: 220
+True Negatives: 19550
+Precision: 0.5
+Recall: 0.06382978723404255
+Accuracy: 0.9881313131313131
+F1: 0.11320754716981131

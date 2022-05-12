@@ -1,9 +1,17 @@
 import os
 from collections import Counter
+from xml.sax.saxutils import prepare_input_source
 import matplotlib.pyplot as plt
 import math
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.model_selection import cross_val_predict
+from sklearn.multioutput import MultiOutputClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from joblib import dump, load
+
 
 valid_tags = ['Abduction',
               'Abuse',
@@ -215,7 +223,6 @@ def filter(tag_list, valid=True):
         return [i for i in tag_list if i != "" and i != " " and i != "\n" and i in valid_tags]
     return [i for i in tag_list if i != "" and i != " " and i != "\n"]
 
-
 def filterData():
     numFiles = 0
     numRemoved = 0
@@ -352,12 +359,12 @@ def countTags():
     plt.savefig("tagFrequency_plot.png", bbox_inches='tight')
 
 
-def extractData(max_ngram=1):
+def extractData(max_ngram=2):
     corpus = []
     numFiles = 0
     y = None
     inside = 0
-    for root, _, files in os.walk("./data"):
+    for root, _, files in os.walk("./subset_data"):
         if ".DS_Store" in files:
             numFiles = len(files) - 1
         else:
@@ -405,14 +412,155 @@ def extractData(max_ngram=1):
     vectorizer = TfidfVectorizer(ngram_range=(1, max_ngram))
     X = vectorizer.fit_transform(corpus)
 
-    print(X.shape)
-    print(y.shape)
+    return X, y
 
+def train(X, y, saveModel = True, modelName = None):
+    model = None
+    cutoff = int(X.shape[0]*0.8)
+    X_train = X[:cutoff]
+    X_test = X[cutoff:]
+    y_train = y[:cutoff]
+    y_test = y[cutoff:]
+
+    if modelName is not None:
+        model = load(modelName)
+    else:
+        # neighbors = KNeighborsClassifier()
+        forest = RandomForestClassifier()
+        multi_target_forest = MultiOutputClassifier(forest)
+        model = multi_target_forest.fit(X_train, y_train)
+
+    y_pred = model.predict(X)
+    total_correct = 0
+    total_predicted_tags = 0
+    total_actual_tags = 0
+    false_pos = 0
+    false_neg = 0
+    true_pos = 0
+    true_neg = 0
+
+    with open("./predictions.txt", "w", encoding="utf-8") as f:
+        for count,pred in enumerate(y_pred):
+            actual_tags = [valid_tags[i] for (i, tag) in enumerate(y[count]) if tag == 1]
+            predicted_tags = [valid_tags[i] for (i, tag) in enumerate(pred) if tag == 1]
+
+            num_correct = 0
+            correct_tags = []
+            incorrect_tags = []
+
+            for j in range(len(pred)):
+                if y[count][j] == 0 and pred[j] == 0:
+                    true_neg += 1
+                elif y[count][j] == 0 and pred[j] == 1:
+                    false_pos += 1
+                elif y[count][j] == 1 and pred[j] == 0:
+                    false_neg += 1
+                elif y[count][j] == 1 and pred[j] == 1:
+                    true_pos += 1
+                else:
+                    print("unexpected values")
+
+
+            for tag in predicted_tags:
+                if tag in actual_tags:
+                    num_correct += 1
+                    correct_tags.append(tag)
+                else:
+                    incorrect_tags.append(tag)
+
+            total_correct += num_correct
+            total_predicted_tags += len(predicted_tags)
+            total_actual_tags += len(actual_tags)
+            f.write(f"Predicted Tags: {str(predicted_tags)}, Actual Tags: {actual_tags}, Number of Correct Tags: {num_correct}, Correct Tags: {correct_tags}, Incorrect Tags: {incorrect_tags} \n")
+    
+    precision = true_pos / (true_pos + false_pos)
+    recall = true_pos / (true_pos + false_neg)
+    accuracy = (true_pos + true_neg) / (true_neg + true_pos + false_neg + false_pos)
+    f1 = (2 * precision * recall) / (precision + recall)
+
+    with open("./results.txt", "w", encoding="utf-8") as f:
+        f.write("Total Correct: " + str(total_correct) + "\n")
+        f.write("Total Predicted Tags: " + str(total_predicted_tags) + "\n")
+        f.write("Total Actual Tags: " + str(total_actual_tags) + "\n")
+        f.write("False Positives: " + str(false_pos) + "\n")
+        f.write("True Positives: " + str(true_pos) + "\n")
+        f.write("False Negatives: " + str(false_neg) + "\n")
+        f.write("True Negatives: " + str(true_neg) + "\n")
+        f.write("Precision: " + str(precision) + "\n")
+        f.write("Recall: " + str(recall) + "\n")
+        f.write("Accuracy: " + str(accuracy) + "\n")
+        f.write("F1: " + str(f1) + "\n")
+
+    if saveModel:
+        dump(model, 'model.joblib')
+
+
+
+def train_old(X, y):
+    clf = MultinomialNB()
+    clf.fit(X, y)
+    # 5 fold cross validation
+    y_pred = cross_val_predict(clf, X, y, method="predict_proba")
+
+    num_tags_predicted = 5
+
+    predictions = []
+    correct_tags = []
+    incorrect_tags = []
+    num_correct = 0
+
+    for i,pred in enumerate(y_pred):
+        # Finds indices of top N largest values
+        indices = np.argpartition(pred, -num_tags_predicted)[-num_tags_predicted:]
+        # Get the N largest values
+        topN = pred[indices]
+
+        for ind in indices:
+            if y[i][ind] == 1:
+                correct_tags.append(valid_tags[ind])
+                num_correct += 1
+            else:
+                incorrect_tags.append(valid_tags[ind])
+
+        predictions.append((indices, topN))
+
+    predictions = np.array(predictions)
+    
+    with open("./predictions.txt", "w", encoding="utf-8") as f:
+        for count, pred in enumerate(predictions):
+            # indicies are indicies of predicted tags, vals are the probabilities of every valid tag
+            indices, vals = pred
+            pred_tags = []
+
+            for i in range(len(indices)):
+                pred_tags.append((valid_tags[indices[i]], vals[i]))
+
+            actual_tags = [valid_tags[tag] for tag in y[count] if tag == 1]
+            
+            f.write(f"Predicted Tags: {pred_tags}, Actual Tags: {actual_tags}, Number of Correct Tags: {num_correct}, Correct Tags: {correct_tags}, Incorrect Tags: {incorrect_tags}")
+
+def evaluatePredictions(y):
+    with open("./predictions.txt", "r+", encoding="utf-8") as f:
+        predictions = f.read()
+        for count, pred in enumerate(predictions):
+            # indicies are indicies of predicted tags, vals are the probabilities of every valid tag
+            indices, vals = pred
+            pred_tags = []
+
+            for i in range(len(indices)):
+                pred_tags.append((valid_tags[indices[i]], vals[i]))
+
+            actual_tags = [valid_tags[tag] for tag in y[count] if tag == 1]
+            
+            f.write(f"Predicted Tags: {pred_tags}, Actual Tags: {actual_tags}, Number of Correct Tags: {num_correct}, Correct Tags: {correct_tags}, Incorrect Tags: {incorrect_tags}")
 
 def main():
     # countTags()
-    # extractData()
-    filterData()
+    # filterData()
+
+    X, y = extractData()
+    train(X, y)
+    
 
 
 if __name__ == "__main__":
