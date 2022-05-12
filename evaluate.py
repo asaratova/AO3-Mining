@@ -10,6 +10,9 @@ from sklearn.model_selection import cross_val_predict
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.multioutput import MultiOutputRegressor
+from sklearn.ensemble import GradientBoostingRegressor
+
 from joblib import dump, load
 
 
@@ -364,7 +367,7 @@ def extractData(max_ngram=2):
     numFiles = 0
     y = None
     inside = 0
-    for root, _, files in os.walk("./subset_data"):
+    for root, _, files in os.walk("./data"):
         if ".DS_Store" in files:
             numFiles = len(files) - 1
         else:
@@ -425,10 +428,11 @@ def train(X, y, saveModel = True, modelName = None):
     if modelName is not None:
         model = load(modelName)
     else:
-        # neighbors = KNeighborsClassifier()
-        forest = RandomForestClassifier()
-        multi_target_forest = MultiOutputClassifier(forest)
-        model = multi_target_forest.fit(X_train, y_train)
+        neighbors = KNeighborsClassifier()
+        # regression = MultiOutputRegressor(GradientBoostingRegressor(random_state=0))
+        # forest = RandomForestClassifier()
+        multi_target_forest = MultiOutputClassifier(neighbors)
+        model = multi_target_forest.fit(X, y)
 
     y_pred = model.predict(X)
     total_correct = 0
@@ -493,8 +497,6 @@ def train(X, y, saveModel = True, modelName = None):
 
     if saveModel:
         dump(model, 'model.joblib')
-
-
 
 def train_old(X, y):
     clf = MultinomialNB()
