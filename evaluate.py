@@ -10,6 +10,9 @@ from sklearn.model_selection import cross_val_predict
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.multioutput import MultiOutputRegressor
+from sklearn.ensemble import GradientBoostingRegressor
+
 from joblib import dump, load
 
 
@@ -435,10 +438,11 @@ def train(X, y, saveModel=True, modelName=None):
     if modelName is not None:
         model = load(modelName)
     else:
-        # neighbors = KNeighborsClassifier()
-        forest = RandomForestClassifier()
-        multi_target_forest = MultiOutputClassifier(forest)
-        model = multi_target_forest.fit(X_train, y_train)
+        neighbors = KNeighborsClassifier()
+        # regression = MultiOutputRegressor(GradientBoostingRegressor(random_state=0))
+        # forest = RandomForestClassifier()
+        multi_target_forest = MultiOutputClassifier(neighbors)
+        model = multi_target_forest.fit(X, y)
 
     y_pred = model.predict(X_test)
     total_correct = 0
