@@ -223,10 +223,12 @@ def filter(tag_list, valid=True):
         return [i for i in tag_list if i != "" and i != " " and i != "\n" and i in valid_tags]
     return [i for i in tag_list if i != "" and i != " " and i != "\n"]
 
-def filterData():
+
+def filterData(data_path="./data"):
     numFiles = 0
     numRemoved = 0
-    for root, _, files in os.walk("./data"):
+    files_to_remove = []
+    for root, _, files in os.walk(data_path):
         numFiles = len(files)
         for i, file in enumerate(files):
             if file[-3:] == "txt":
@@ -237,7 +239,11 @@ def filterData():
                     try:
                         chaptertext_index = all_text.index("Chapter Text") + 12
                     except:
-                        chaptertext_index = all_text.index("Work Text:") + 10
+                        try:
+                            chaptertext_index = all_text.index(
+                                "Work Text:") + 10
+                        except:
+                            print(file)
 
                     starting_tags_index = all_text.index("[starting tags]")
                     # This is the actual text
@@ -252,10 +258,13 @@ def filterData():
                     filtered_tags = filter(tags_separated)
 
                     if len(fic_text) < 100 or fic_text is None or fic_text == " " or filtered_tags == ["None"]\
-                         or fic_text == ":" or fic_text == "\n" or filtered_tags is None\
-                              or filtered_tags == []:
+                            or fic_text == ":" or fic_text == "\n" or filtered_tags is None\
+                            or filtered_tags == []:
                         numRemoved += 1
-                        os.remove(root + "/" + file)
+                        files_to_remove.append(file)
+
+        for remove_file in files_to_remove:
+            os.remove(root + "/" + remove_file)
 
     print("Num files: ", numFiles)
     print("Num files removed: ", numRemoved)
@@ -359,12 +368,12 @@ def countTags():
     plt.savefig("tagFrequency_plot.png", bbox_inches='tight')
 
 
-def extractData(max_ngram=2):
+def extractData(data_path="./data", max_ngram=2):
     corpus = []
     numFiles = 0
     y = None
     inside = 0
-    for root, _, files in os.walk("./subset_data"):
+    for root, _, files in os.walk(data_path):
         if ".DS_Store" in files:
             numFiles = len(files) - 1
         else:
@@ -414,7 +423,8 @@ def extractData(max_ngram=2):
 
     return X, y
 
-def train(X, y, saveModel = True, modelName = None):
+
+def train(X, y, saveModel=True, modelName=None):
     model = None
     cutoff = int(X.shape[0]*0.8)
     X_train = X[:cutoff]
@@ -430,7 +440,7 @@ def train(X, y, saveModel = True, modelName = None):
         multi_target_forest = MultiOutputClassifier(forest)
         model = multi_target_forest.fit(X_train, y_train)
 
-    y_pred = model.predict(X)
+    y_pred = model.predict(X_test)
     total_correct = 0
     total_predicted_tags = 0
     total_actual_tags = 0
@@ -440,26 +450,27 @@ def train(X, y, saveModel = True, modelName = None):
     true_neg = 0
 
     with open("./predictions.txt", "w", encoding="utf-8") as f:
-        for count,pred in enumerate(y_pred):
-            actual_tags = [valid_tags[i] for (i, tag) in enumerate(y[count]) if tag == 1]
-            predicted_tags = [valid_tags[i] for (i, tag) in enumerate(pred) if tag == 1]
+        for count, pred in enumerate(y_pred):
+            actual_tags = [valid_tags[i]
+                           for (i, tag) in enumerate(y_test[count]) if tag == 1]
+            predicted_tags = [valid_tags[i]
+                              for (i, tag) in enumerate(pred) if tag == 1]
 
             num_correct = 0
             correct_tags = []
             incorrect_tags = []
 
             for j in range(len(pred)):
-                if y[count][j] == 0 and pred[j] == 0:
+                if y_test[count][j] == 0 and pred[j] == 0:
                     true_neg += 1
-                elif y[count][j] == 0 and pred[j] == 1:
+                elif y_test[count][j] == 0 and pred[j] == 1:
                     false_pos += 1
-                elif y[count][j] == 1 and pred[j] == 0:
+                elif y_test[count][j] == 1 and pred[j] == 0:
                     false_neg += 1
-                elif y[count][j] == 1 and pred[j] == 1:
+                elif y_test[count][j] == 1 and pred[j] == 1:
                     true_pos += 1
                 else:
                     print("unexpected values")
-
 
             for tag in predicted_tags:
                 if tag in actual_tags:
@@ -471,11 +482,13 @@ def train(X, y, saveModel = True, modelName = None):
             total_correct += num_correct
             total_predicted_tags += len(predicted_tags)
             total_actual_tags += len(actual_tags)
-            f.write(f"Predicted Tags: {str(predicted_tags)}, Actual Tags: {actual_tags}, Number of Correct Tags: {num_correct}, Correct Tags: {correct_tags}, Incorrect Tags: {incorrect_tags} \n")
-    
+            f.write(
+                f"Predicted Tags: {str(predicted_tags)}, Actual Tags: {actual_tags}, Number of Correct Tags: {num_correct}, Correct Tags: {correct_tags}, Incorrect Tags: {incorrect_tags} \n")
+
     precision = true_pos / (true_pos + false_pos)
     recall = true_pos / (true_pos + false_neg)
-    accuracy = (true_pos + true_neg) / (true_neg + true_pos + false_neg + false_pos)
+    accuracy = (true_pos + true_neg) / \
+        (true_neg + true_pos + false_neg + false_pos)
     f1 = (2 * precision * recall) / (precision + recall)
 
     with open("./results.txt", "w", encoding="utf-8") as f:
@@ -495,7 +508,6 @@ def train(X, y, saveModel = True, modelName = None):
         dump(model, 'model.joblib')
 
 
-
 def train_old(X, y):
     clf = MultinomialNB()
     clf.fit(X, y)
@@ -509,9 +521,10 @@ def train_old(X, y):
     incorrect_tags = []
     num_correct = 0
 
-    for i,pred in enumerate(y_pred):
+    for i, pred in enumerate(y_pred):
         # Finds indices of top N largest values
-        indices = np.argpartition(pred, -num_tags_predicted)[-num_tags_predicted:]
+        indices = np.argpartition(
+            pred, -num_tags_predicted)[-num_tags_predicted:]
         # Get the N largest values
         topN = pred[indices]
 
@@ -525,7 +538,7 @@ def train_old(X, y):
         predictions.append((indices, topN))
 
     predictions = np.array(predictions)
-    
+
     with open("./predictions.txt", "w", encoding="utf-8") as f:
         for count, pred in enumerate(predictions):
             # indicies are indicies of predicted tags, vals are the probabilities of every valid tag
@@ -536,8 +549,10 @@ def train_old(X, y):
                 pred_tags.append((valid_tags[indices[i]], vals[i]))
 
             actual_tags = [valid_tags[tag] for tag in y[count] if tag == 1]
-            
-            f.write(f"Predicted Tags: {pred_tags}, Actual Tags: {actual_tags}, Number of Correct Tags: {num_correct}, Correct Tags: {correct_tags}, Incorrect Tags: {incorrect_tags}")
+
+            f.write(
+                f"Predicted Tags: {pred_tags}, Actual Tags: {actual_tags}, Number of Correct Tags: {num_correct}, Correct Tags: {correct_tags}, Incorrect Tags: {incorrect_tags}")
+
 
 def evaluatePredictions(y):
     with open("./predictions.txt", "r+", encoding="utf-8") as f:
@@ -551,16 +566,17 @@ def evaluatePredictions(y):
                 pred_tags.append((valid_tags[indices[i]], vals[i]))
 
             actual_tags = [valid_tags[tag] for tag in y[count] if tag == 1]
-            
-            f.write(f"Predicted Tags: {pred_tags}, Actual Tags: {actual_tags}, Number of Correct Tags: {num_correct}, Correct Tags: {correct_tags}, Incorrect Tags: {incorrect_tags}")
+
+            f.write(
+                f"Predicted Tags: {pred_tags}, Actual Tags: {actual_tags}, Number of Correct Tags: {num_correct}, Correct Tags: {correct_tags}, Incorrect Tags: {incorrect_tags}")
+
 
 def main():
     # countTags()
     # filterData()
 
-    X, y = extractData()
-    train(X, y)
-    
+    X, y = extractData("./data")
+    train(X, y, saveModel=True)
 
 
 if __name__ == "__main__":

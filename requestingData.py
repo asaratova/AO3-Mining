@@ -43,7 +43,7 @@ def getIds(start_page, end_page):
     The two urls are used as the initial template with the page number being squished in there to take us to the needed page
     This may need work on traversing through all the chapters
     '''
-    original_url = "https://archiveofourown.org/tags/Marvel/works?commit=Sort+and+Filter&page="
+    original_url = "https://archiveofourown.org/tags/Harry%20Potter%20-%20J*d*%20K*d*%20Rowling/works?commit=Sort+and+Filter&page="
     second_url = "&work_search%5Bcomplete%5D=&work_search%5Bcrossover%5D=&work_search%5Bdate_from%5D=&work_search%5Bdate_to%5D=&work_search%5Bexcluded_tag_names%5D=&work_search%5Blanguage_id%5D=en&work_search%5Bother_tag_names%5D=&work_search%5Bquery%5D=&work_search%5Bsort_column%5D=hits&work_search%5Bwords_from%5D=&work_search%5Bwords_to%5D="
     ids = []
     print("In get contents")
@@ -174,8 +174,8 @@ def main():
     print("In main requesting")
 
     # Must start at 1
-    start_id = 125
-    end_id = 400
+    start_id = 1
+    end_id = 10
 
     ids = getIds(start_id, end_id)
     print(Counter(ids))
@@ -186,23 +186,23 @@ def main():
         if i % 20 == 0:
             print(i)
 
-    path = "./data"
+    path = "./test_data"
     try:
         os.mkdir(path)
     except:
         print("Data directory already made.")
 
+    first = True
     for root, dirs, files in os.walk("."):
-        for file in files:
-            if file[-3:] == "txt":
-                try:
-                    shutil.move(root + "/" + file, path)
-                except:
-                    print("File already exists")
-<<<<<<< HEAD
+        if first:
+            for file in files:
+                if file[-3:] == "txt" and "predictions" not in file and "results" not in file:
+                    try:
+                        shutil.move(root + "/" + file, path)
+                    except:
+                        print("File already exists")
+        first = False
 
-=======
->>>>>>> 62900be1064624119e82c0c59d347f4780c2b60f
 
 if __name__ == "__main__":
     main()
